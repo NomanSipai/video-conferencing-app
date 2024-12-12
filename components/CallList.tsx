@@ -7,14 +7,11 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import MeetingCard from "./MeetingCard";
 import Loader from "./Loader";
-import { useToast } from "@/hooks/use-toast";
 
 const CallList = ({ type }: { type: "ended" | "upcoming" | "recordings" }) => {
   const { endedCalls, upcomingCalls, callRecording, isLoading } = useGetCalls();
   const router = useRouter();
   const [recordings, setRecordings] = useState<CallRecording[]>([]);
-
-  const { toast } = useToast();
 
   useEffect(() => {
     const fetchRecordings = async () => {
@@ -35,7 +32,6 @@ const CallList = ({ type }: { type: "ended" | "upcoming" | "recordings" }) => {
 
         setRecordings(recordings);
       } catch (error) {
-        toast({ title: "Try again later" });
         console.log(error);
       }
     };
