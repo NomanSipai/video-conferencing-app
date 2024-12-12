@@ -51,11 +51,18 @@ const CallList = ({ type }: { type: "ended" | "upcoming" | "recordings" }) => {
 
         const recordings = callData
           .filter((call) => call?.recordings?.length > 0)
-          .flatMap((call) => call?.recordings);
+          .flatMap((call) =>
+            call.recordings.map((recording) => ({
+              ...recording,
+              end_time: new Date(recording.end_time),
+              start_time: new Date(recording.start_time),
+            }))
+          );
 
         setRecordings(recordings);
       } catch (error) {
         toast({ title: "Try again later" });
+        console.log(error);
       }
     };
 
@@ -85,7 +92,7 @@ const CallList = ({ type }: { type: "ended" | "upcoming" | "recordings" }) => {
             title={
               (meeting as Call).state?.custom?.description ||
               (meeting as CallRecording).filename?.substring(0, 26) ||
-              "No Description"
+              "Personal Meeting"
             }
             date={
               (meeting as Call).state?.startsAt?.toLocaleString() ||

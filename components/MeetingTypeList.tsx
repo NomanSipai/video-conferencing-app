@@ -8,6 +8,7 @@ import { useUser } from "@clerk/nextjs";
 import { Call, useStreamVideoClient } from "@stream-io/video-react-sdk";
 import { Textarea } from "./ui/textarea";
 import ReactDatePicker from "react-datepicker";
+import { Input } from "./ui/input";
 
 const MeetingTypeList = () => {
   const [meetingState, setMeetingState] = useState<
@@ -38,6 +39,7 @@ const MeetingTypeList = () => {
       const startsAt =
         values.dateTime.toISOString() || new Date(Date.now()).toISOString();
       const description = values.description || "Instant meeting";
+
       await call.getOrCreate({
         data: {
           starts_at: startsAt,
@@ -46,6 +48,7 @@ const MeetingTypeList = () => {
           },
         },
       });
+
       setCallDetails(call);
       if (!values.description) {
         router.push(`/meeting/${call.id}`);
@@ -89,7 +92,6 @@ const MeetingTypeList = () => {
         description="Via invitation link"
         handleClick={() => setMeetingState("isJoiningMeeting")}
       />
-
       {!callDetails ? (
         <MeetingModal
           isOpen={meetingState === "isScheduleMeeting"}
@@ -139,7 +141,6 @@ const MeetingTypeList = () => {
           buttonText="Copy Meeting Link"
         />
       )}
-
       <MeetingModal
         isOpen={meetingState === "isInstantMeeting"}
         onClose={() => setMeetingState(undefined)}
@@ -148,6 +149,20 @@ const MeetingTypeList = () => {
         className="text-center"
         handleClick={createMeeting}
       />
+      <MeetingModal
+        isOpen={meetingState === "isJoiningMeeting"}
+        onClose={() => setMeetingState(undefined)}
+        title="Type the link here"
+        buttonText="Join Meeting"
+        className="text-center"
+        handleClick={() => router.push(values.link)}
+      >
+        <Input
+          placeholder="Meeting link"
+          className="border-none bg-dark-3 focus-visible:ring-0 focus-visible:ring-offset-0"
+          onChange={(e) => setValues({ ...values, link: e.target.value })}
+        />
+      </MeetingModal>
     </section>
   );
 };

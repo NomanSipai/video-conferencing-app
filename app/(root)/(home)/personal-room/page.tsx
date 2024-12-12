@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { toast, useToast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { useGetCallById } from "@/hooks/useGetCallById";
 import { useUser } from "@clerk/nextjs";
 import { useStreamVideoClient } from "@stream-io/video-react-sdk";
@@ -32,7 +32,7 @@ const PersonalRoom = () => {
   const router = useRouter();
   const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${meetingId}?personal=true`;
 
-  const { call } = useGetCallById(meetingId);
+  const { call } = useGetCallById(meetingId || "");
 
   const startRoom = async () => {
     if (!client || !user) return;
