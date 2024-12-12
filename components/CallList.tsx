@@ -16,32 +16,6 @@ const CallList = ({ type }: { type: "ended" | "upcoming" | "recordings" }) => {
 
   const { toast } = useToast();
 
-  const getCalls = () => {
-    switch (type) {
-      case "ended":
-        return endedCalls;
-      case "recordings":
-        return recordings;
-      case "upcoming":
-        return upcomingCalls;
-      default:
-        return [];
-    }
-  };
-
-  const getNoCallsMessage = () => {
-    switch (type) {
-      case "ended":
-        return "No Previous Calls";
-      case "recordings":
-        return "No Recordings Calls";
-      case "upcoming":
-        return "No Upcoming Calls";
-      default:
-        return "";
-    }
-  };
-
   useEffect(() => {
     const fetchRecordings = async () => {
       try {
@@ -70,6 +44,32 @@ const CallList = ({ type }: { type: "ended" | "upcoming" | "recordings" }) => {
       fetchRecordings();
     }
   }, [type, callRecording]);
+
+  const getCalls = () => {
+    switch (type) {
+      case "ended":
+        return endedCalls;
+      case "recordings":
+        return recordings;
+      case "upcoming":
+        return upcomingCalls;
+      default:
+        return [];
+    }
+  };
+
+  const getNoCallsMessage = () => {
+    switch (type) {
+      case "ended":
+        return "No Previous Calls";
+      case "recordings":
+        return "No Recordings Calls";
+      case "upcoming":
+        return "No Upcoming Calls";
+      default:
+        return "";
+    }
+  };
 
   const calls = getCalls();
   const noCallsMessage = getNoCallsMessage();
